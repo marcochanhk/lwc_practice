@@ -41,6 +41,8 @@ export default class TripReportFormAdvanced extends LightningElement {
 	reviewType;
 	rating = 3;
 	review;
+
+	saveButtonDisabled = true;
 	
 	//TODO #3: following the examples of and FIELD_DATE and FIELD_INSTRUCTOR, import the name, rating, review type, and review fields
 	@wire(getRecord, { recordId: '$recordId', fields:fieldsToLoad })
@@ -122,6 +124,24 @@ export default class TripReportFormAdvanced extends LightningElement {
 	onSave() {
 		this.saveTripReport();
 	}
+
+	onBlur() {
+		this.saveButtonDisabled = !this.validateFields();
+	}
+
+	validateFields() {
+		let field = null;
+		let fields = this.template.querySelectorAll('.validateMe');
+		let result = true;
+		for (let i = 0; i < fields.length; i++) {
+			field = fields[i];
+			result = field.checkValidity();
+			if (!result) break;
+		}
+		return result;
+		
+	}
+
 	saveTripReport() {
 		const fieldsToSave = {}
 		fieldsToSave[FIELD_DATE.fieldApiName] = this.dateVisited;
@@ -147,7 +167,6 @@ export default class TripReportFormAdvanced extends LightningElement {
 					//TODO #7: after record creation, store the new ID of the trip report in our recordId property
 					this.recordId = tripReport.id;
 					Utils.showToast(this,'Success', 'Trip Report Created', 'success');
-					this.returnToBrowseMode();
 				})
 				.catch(error => {
 					Utils.showToast(this,'Error creating record', error.body.message, 'error');
@@ -161,7 +180,6 @@ export default class TripReportFormAdvanced extends LightningElement {
 			updateRecord(recordInput)
                 .then(() => {
 					Utils.showToast(this,'Success', 'Trip report updated', 'success');
-					this.returnToBrowseMode(this.recordId);
                 })
                 .catch(error => {
                     Utils.showToast(this,'Error updating record', error.body.message, 'error');
