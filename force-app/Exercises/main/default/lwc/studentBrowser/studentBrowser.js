@@ -1,12 +1,17 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, track, wire } from 'lwc';
 import getStudents from '@salesforce/apex/StudentBrowser.getStudents';
 import { publish, MessageContext } from 'lightning/messageService';
 import SELECTED_STUDENT_CHANNEL from '@salesforce/messageChannel/SelectedStudentChannel__c';
 import { NavigationMixin } from 'lightning/navigation';
 
 export default class StudentBrowser extends NavigationMixin(LightningElement) {
+
+	@track students;
 	@wire(getStudents, { instructorId: '$selectedInstructorId', courseDeliveryId: '$selectedDeliveryId' })
-	students;
+	wired_getStudents(result) {
+		this.students = result;
+		this.dispatchEvent(new CustomEvent('doneloading', {bubbles:true,composed:true}));
+	}
 
 	cols = [
 		{
@@ -39,6 +44,7 @@ export default class StudentBrowser extends NavigationMixin(LightningElement) {
 	handleFilterChange(event){
 		this.selectedDeliveryId = event.detail.deliveryId;
 		this.selectedInstructorId = event.detail.instructorId;
+		this.dispatchEvent(new CustomEvent('loading', {bubbles:true, composed:true }));
 	}
 
 	handleStudentSelected(event){
