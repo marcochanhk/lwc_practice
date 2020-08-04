@@ -1,0 +1,8 @@
+<template>
+    <lightning-card icon-name="utility:date_time" title="Current Date and Time">
+        <lightning-button icon-name="utility:refresh" slot="actions">
+            onclick={updateCurrentDT} </lightning-button>
+        <lightning-formatted-date-time value={currentDateTime} hour12="true" second="2-digit"
+        minute="2-digit" hour="2-digit" year="numeric" month="numeric" day="numeric" weekday="long"></lightning-formatted-date-time>
+    </lightning-card>
+</template>
