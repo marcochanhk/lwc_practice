@@ -3,6 +3,7 @@ import getInstructors from '@salesforce/apex/StudentBrowserForm.getInstructors';
 import getDeliveriesByInstructor from '@salesforce/apex/StudentBrowserForm.getDeliveriesByInstructor';
 
 export default class StudentBrowserForm extends LightningElement {
+    @track instructors = [];
     error;
     selectedInstructorId = '';
     @track deliveries = [];
@@ -47,6 +48,10 @@ export default class StudentBrowserForm extends LightningElement {
         } else if (error) {
             this.error = error;
         }
+    }
 
+    onInstructorChange(event) {
+        this.selectedDeliveryId = '';
+        this.selectedInstructorId = event.target.value;
     }
 }
