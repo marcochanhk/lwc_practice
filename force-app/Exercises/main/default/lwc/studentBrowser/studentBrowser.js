@@ -3,7 +3,17 @@ import getStudents from '@salesforce/apex/StudentBrowser.getStudents';
 
 export default class StudentBrowser extends LightningElement {
     // @track studentList = [];
-    @wire(getStudents,{instructorId:"", courseDeliveryId:""}) students;
+    selectedDeliveryId = '';
+    selectedInstructorId = '';
+    //@wire(getStudents,{instructorId:"", courseDeliveryId:""}) students;
+
+    @wire(getStudents, { instructorId: '$selectedInstructorId', courseDeliveryId: '$selectedDeliveryId' })students; //2-9
+    
+    handleFilterChange(event){
+        this.selectedDeliveryId = event.detail.deliveryId;
+        this.selectedInstructorId = event.detail.instructorId;
+    }
+
 
     // constructor() {
     //     super();

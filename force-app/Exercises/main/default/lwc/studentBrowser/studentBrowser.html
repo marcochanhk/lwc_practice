@@ -1,6 +1,7 @@
 <template>
     <lightning-tabset variant="scoped">
         <lightning-tab label="Gallery">
+            <c-student-browser-form onfilterchange={handleFilterChange}></c-student-browser-form>
             <c-student-tiles student-list={students.data}></c-student-tiles>
         </lightning-tab>
     </lightning-tabset>
