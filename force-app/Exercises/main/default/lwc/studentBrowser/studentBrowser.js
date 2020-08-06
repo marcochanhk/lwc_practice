@@ -45,7 +45,16 @@ export default class StudentBrowser extends LightningElement {
     }
 
     updateSelectedStudent(studentId) {
-        publish(this.messageContext, SELECTED_STUDENT_CHANNEL, { studentId: studentId });
+        let grid = this.template.querySelector('c-responsive-datatable');
+        let gallery = this.template.querySelector('c-student-tiles');
+        
+        if (gallery) {
+            gallery.setSelectedStudent(studentId);
+        }
+        if (grid) {
+            grid.setSelectedRecord(studentId);
+        }
+        fireEvent(this.pageRef, 'studentChange', { studentId });
     }
 
     handleRowDblClick(event) {
