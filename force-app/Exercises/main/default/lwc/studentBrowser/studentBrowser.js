@@ -14,24 +14,24 @@ export default class StudentBrowser extends LightningElement {
     selectedInstructorId = '';
 
     cols = [{
-            fieldName: "Name",
-            label: "Name"
-        },
-        {
-            fieldName: "Title",
-            label: "Title",
-            hiddenOnMobile: true
-        },
-        {
-            fieldName: "Phone",
-            label: "Phone",
-            type: "phone"
-        },
-        {
-            fieldName: "Email",
-            label: "E-Mail",
-            type: "email"
-        }
+        fieldName: "Name",
+        label: "Name"
+    },
+    {
+        fieldName: "Title",
+        label: "Title",
+        hiddenOnMobile: true
+    },
+    {
+        fieldName: "Phone",
+        label: "Phone",
+        type: "phone"
+    },
+    {
+        fieldName: "Email",
+        label: "E-Mail",
+        type: "email"
+    }
     ];
 
     handleFilterChange(event) {
@@ -58,6 +58,11 @@ export default class StudentBrowser extends LightningElement {
                 actionName: 'edit'
             }
         });
+    }
+
+    handleRowClick(event) {
+        let studentId = event.detail.pk;
+        this.updateSelectedStudent(studentId);
     }
 
 }
