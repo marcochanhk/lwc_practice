@@ -12,17 +12,39 @@ export default class StudentBrowser extends LightningElement {
 	selectedDeliveryId = '';
 	selectedInstructorId = '';
 
-	handleFilterChange(event){
+	cols = [
+		{
+			fieldName: "Name",
+			label: "Name"
+		},
+		{
+			fieldName: "Title",
+			label: "Title",
+			hiddenOnMobile: true
+		},
+		{
+			fieldName: "Phone",
+			label: "Phone",
+			type: "phone"
+		},
+		{
+			fieldName: "Email",
+			label: "E-Mail",
+			type: "email"
+		}
+	];
+
+	handleFilterChange(event) {
 		this.selectedDeliveryId = event.detail.deliveryId;
 		this.selectedInstructorId = event.detail.instructorId;
 	}
 
-	handleStudentSelected(event){
+	handleStudentSelected(event) {
 		const studentId = event.detail.studentId;
 		this.updateSelectedStudent(studentId);
 	}
 
-	updateSelectedStudent(studentId){
+	updateSelectedStudent(studentId) {
 		publish(this.messageContext, SELECTED_STUDENT_CHANNEL, { studentId: studentId });
 	}
 
