@@ -1,7 +1,7 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import getCertifiedStudents from '@salesforce/apex/CertifiedStudentList.getCertifiedStudents';
-import deleteStudentCertification from
-'@salesforce/apex/CertifiedStudentList.deleteStudentCertification';
+import deleteStudentCertification from '@salesforce/apex/CertifiedStudentList.deleteStudentCertification';
+import LABEL_FEATURE_NOT_AVAILABLE from '@salesforce/label/c.Feature_Not_Available';
 import { refreshApex } from '@salesforce/apex';
 import Utils from 'c/utils';
 
@@ -13,8 +13,8 @@ export default class CertifiedStudentList extends LightningElement {
     btnGroupDisabled = true;
     error;
     _wiredStudentResult;
-    
-    @wire(getCertifiedStudents, {certificationId: '$certificationId'})
+
+    @wire(getCertifiedStudents, { certificationId: '$certificationId' })
     wired_getCertifiedStudents(result) {
         this._wiredStudentResult = result;
         this.certifiedStudents = [];
@@ -56,10 +56,10 @@ export default class CertifiedStudentList extends LightningElement {
             type: 'phone'
         }
     ];
-    
+
     onRowSelection(event) {
         let numSelected = event.detail.selectedRows.length;
-        this.btnGroupDisabled= (numSelected===0);
+        this.btnGroupDisabled = (numSelected === 0);
     }
 
     getSelectedIDs() {
@@ -74,14 +74,14 @@ export default class CertifiedStudentList extends LightningElement {
         return ids;
     }
 
-    onCertActions (event) {
+    onCertActions(event) {
         const btnClicked = event.target.getAttribute('data-btn-id');
         switch (btnClicked) {
             case 'btnEmail':
-                this.notAvailable();    
+                this.notAvailable();
                 break;
             case 'btnSendCert':
-                this.notAvailable();    
+                this.notAvailable();
                 break;
             case 'btnDelete':
                 this.onDelete();
@@ -92,18 +92,19 @@ export default class CertifiedStudentList extends LightningElement {
     }
     onDelete() {
         let certificationIds = this.getSelectedIDs();
-        deleteStudentCertification({certificationIds})
-        .then(  () => {
-            refreshApex(this._wiredStudentResult);
-        })
-        .catch(error => {
-            this.error = error;
-        });
-        
+        deleteStudentCertification({ certificationIds })
+            .then(() => {
+                refreshApex(this._wiredStudentResult);
+            })
+            .catch(error => {
+                this.error = error;
+            });
+
     }
 
     notAvailable() {
-        Utils.showModal(this,'Not Available', 'This feature is currently unavailable');
+        Utils.showModal(this, 'Not Available',
+            LABEL_FEATURE_NOT_AVAILABLE);
     }
-    
+
 }
